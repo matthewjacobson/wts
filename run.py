@@ -415,8 +415,8 @@ if __name__ == "__main__":
 	button.when_pressed = resume
 
 	# manual run - mimmick buttons
-	keyboard.on_press_key("p", run)
-	keyboard.on_press_key("r", resume)
+	keyboard.on_press_key("p", lambda _:print("p Key Pressed"))
+	keyboard.on_press_key("r", lambda _:print("r Key Pressed"))
 	
 	signal.pause()
 
