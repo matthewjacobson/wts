@@ -381,7 +381,7 @@ def resume_plot(output_svg):
 
 from gpiozero import Button
 import signal
-import keyboard
+from pynput import keyboard
 
 if __name__ == "__main__":
 
@@ -415,10 +415,15 @@ if __name__ == "__main__":
 	button.when_pressed = resume
 
 	# manual run - mimmick buttons
-	keyboard.on_press_key("p", lambda _:print("p Key Pressed"))
-	keyboard.on_press_key("r", lambda _:print("r Key Pressed"))
-	keyboard.wait('esc')
+	def on_press(key):
+		try:
+			print('Alphanumeric key pressed: {0} '.format(key.char))
+		except AttributeError:
+			print('special key pressed: {0}'.format(key))
+
+	with keyboard.Listener(on_press=on_press) as listener:
+		listener.join()
 	
-	# signal.pause()
+	signal.pause()
 
 #-------------------------------------------#
