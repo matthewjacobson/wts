@@ -419,6 +419,6 @@ if __name__ == "__main__":
 	keyboard.on_press_key("r", lambda _:print("r Key Pressed"))
 	keyboard.wait('esc')
 	
-	signal.pause()
+	# signal.pause()
 
 #-------------------------------------------#
