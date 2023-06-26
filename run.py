@@ -432,10 +432,10 @@ if __name__ == "__main__":
 	time.sleep(5)
 	axi.plot_setup(output_homed)
 	axi.options.mode = "res_plot"
-	axi.plot_run()
+	output_resume = axi.plot_run(True)
 	time.sleep(5)
-	axi.plot_setup(output_svg)
+	axi.plot_setup(output_resume)
 	axi.options.mode = "res_home"
-	output_homed = axi.plot_run(True)
+	axi.plot_run(True)
 
 #-------------------------------------------#
