@@ -374,7 +374,10 @@ def resume_plot(output_svg):
 		elif axi.errors.code == 104:
 			logging.error(f"failed to connect")
 	
-
+def disengage_motors():
+	axi.plot_setup()
+	axi.options.mode = "align"
+	axi.plot_run()
 #-------------------------------------------#
 
 
@@ -388,69 +391,73 @@ import signal
 
 if __name__ == "__main__":
 
-	# isRunning = False
+	isRunning = False
+	in_progress_svg = None
 	
-	# def run():
-	# 	print("running")
-	# 	global isRunning
-	# 	if not isRunning:
-	# 		isRunning = True
-	# 		log_timestamp = create_log()
-	# 		data = get_data()
-	# 		svg_filename = create_svg(log_timestamp, data)
-	# 		output_svg = plot(svg_filename)
-	# 		isRunning = False
-	# 		print("done")
-	# 		print(output_svg)
-
-	# def resume():
-	# 	print("resuming")
-	# 	global isRunning, output_svg
-	# 	print(output_svg)
-	# 	if not isRunning:
-	# 		isRunning = True
-	# 		log_timestamp = create_log()
-	# 		output_svg = resume_plot(output_svg)
-	# 		isRunning = False
-
-	# run_button = Button(14)
-	# run_button.when_pressed = run
-	
-	# resume_button = Button(24)
-	# resume_button.when_pressed = resume
-	
-	# signal.pause()
-
-	import time
-
-	output_svg = None
-
 	def run():
-		global output_svg
-		axi.plot_setup("/home/pi/Desktop/wts/outputs/1687811533_output.svg")
-		output_svg = axi.plot_run(True)
-		print(output_svg)
+		print("running")
+		global isRunning, in_progress_svg
+		if not isRunning:
+			isRunning = True
+			log_timestamp = create_log()
+			data = get_data()
+			svg_filename = create_svg(log_timestamp, data)
+			in_progress_svg = plot(svg_filename)
+			isRunning = False
+			print("done")
+			print(in_progress_svg)
 
 	def resume():
-		global output_svg
-		axi.plot_setup(output_svg)
-		axi.options.mode = "res_plot"
-		axi.plot_run(True)
-
-	def disengage_motors():
-		axi.plot_setup()
-		axi.options.mode = "align"
-		axi.plot_run()
+		print("resuming")
+		global isRunning, output_svg
+		print(output_svg)
+		if not isRunning:
+			isRunning = True
+			log_timestamp = create_log()
+			output_svg = resume_plot(output_svg)
+			isRunning = False
 
 	run_button = Button(14)
 	run_button.when_pressed = run
 	
 	resume_button = Button(24)
 	resume_button.when_pressed = resume
-
-	disengage_button = Button(25)
-	disengage_button.when_pressed = disengage_motors
+	
+	resume_button = Button(25)
+	resume_button.when_pressed = disengage_motors
 	
 	signal.pause()
+
+	# import time
+
+	# output_svg = None
+
+	# def run():
+	# 	global output_svg
+	# 	axi.plot_setup("/home/pi/Desktop/wts/outputs/1687811533_output.svg")
+	# 	output_svg = axi.plot_run(True)
+	# 	print(output_svg)
+
+	# def resume():
+	# 	global output_svg
+	# 	axi.plot_setup(output_svg)
+	# 	axi.options.mode = "res_plot"
+	# 	axi.plot_run(True)
+
+	# def disengage_motors():
+	# 	axi.plot_setup()
+	# 	axi.options.mode = "align"
+	# 	axi.plot_run()
+
+	# run_button = Button(14)
+	# run_button.when_pressed = run
+	
+	# resume_button = Button(24)
+	# resume_button.when_pressed = resume
+
+	# disengage_button = Button(25)
+	# disengage_button.when_pressed = disengage_motors
+	
+	# signal.pause()
 
 #-------------------------------------------#
