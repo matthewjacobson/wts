@@ -400,10 +400,12 @@ if __name__ == "__main__":
 			output_svg = plot(svg_filename)
 			isRunning = False
 			print("done")
+			print(output_svg)
 
 	def resume():
 		print("resuming")
 		global isRunning, output_svg
+		print(output_svg)
 		if not isRunning:
 			isRunning = True
 			log_timestamp = create_log()
