@@ -416,8 +416,5 @@ if __name__ == "__main__":
 	# signal.pause()
 
 	log_timestamp = create_log()
-	data = get_data()
-
-	print(data)
 
 #-------------------------------------------#
