@@ -425,6 +425,7 @@ if __name__ == "__main__":
 	import time
 	axi.plot_setup("/home/pi/Desktop/wts/outputs/1687811533_output.svg")
 	output_svg = axi.plot_run(True)
+	print(output_svg)
 	time.sleep(5)
 	axi.plot_setup(output_svg)
 	axi.options.mode = "res_home"
