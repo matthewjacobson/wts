@@ -290,6 +290,7 @@ from pyaxidraw import axidraw
 
 # create the axidraw class instance
 axi = axidraw.AxiDraw()
+axi.plot_setup()
 
 # configure plot context
 # axi.options.speed_pendown = AXIDRAW_OPTIONS["speed_pendown"]
