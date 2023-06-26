@@ -388,54 +388,68 @@ import signal
 
 if __name__ == "__main__":
 
-	isRunning = False
+	# isRunning = False
 	
+	# def run():
+	# 	print("running")
+	# 	global isRunning
+	# 	if not isRunning:
+	# 		isRunning = True
+	# 		log_timestamp = create_log()
+	# 		data = get_data()
+	# 		svg_filename = create_svg(log_timestamp, data)
+	# 		output_svg = plot(svg_filename)
+	# 		isRunning = False
+	# 		print("done")
+	# 		print(output_svg)
+
+	# def resume():
+	# 	print("resuming")
+	# 	global isRunning, output_svg
+	# 	print(output_svg)
+	# 	if not isRunning:
+	# 		isRunning = True
+	# 		log_timestamp = create_log()
+	# 		output_svg = resume_plot(output_svg)
+	# 		isRunning = False
+
+	# run_button = Button(14)
+	# run_button.when_pressed = run
+	
+	# resume_button = Button(24)
+	# resume_button.when_pressed = resume
+	
+	# signal.pause()
+
+	import time
+
+	output_svg = None
+
 	def run():
-		print("running")
-		global isRunning
-		if not isRunning:
-			isRunning = True
-			log_timestamp = create_log()
-			data = get_data()
-			svg_filename = create_svg(log_timestamp, data)
-			output_svg = plot(svg_filename)
-			isRunning = False
-			print("done")
-			print(output_svg)
+		global output_svg
+		axi.plot_setup("/home/pi/Desktop/wts/outputs/1687811533_output.svg")
+		output_svg = axi.plot_run(True)
+		print(output_svg)
 
 	def resume():
-		print("resuming")
-		global isRunning, output_svg
-		print(output_svg)
-		if not isRunning:
-			isRunning = True
-			log_timestamp = create_log()
-			output_svg = resume_plot(output_svg)
-			isRunning = False
+		global output_svg
+		axi.plot_setup(output_svg)
+		axi.options.mode = "res_plot"
+		axi.plot_run(True)
+
+	def disengage_motors():
+		axi.options.mode = "align"
+		axi.plot_run()
 
 	run_button = Button(14)
 	run_button.when_pressed = run
 	
 	resume_button = Button(24)
 	resume_button.when_pressed = resume
+
+	resume_button = Button(25)
+	resume_button.when_pressed = disengage_motors
 	
 	signal.pause()
-
-	# import time
-	# axi.plot_setup("/home/pi/Desktop/wts/outputs/1687811533_output.svg")
-	# output_svg = axi.plot_run(True)
-	# print(output_svg)
-	# time.sleep(5)
-	# axi.plot_setup(output_svg)
-	# axi.options.mode = "res_home"
-	# output_homed = axi.plot_run(True)
-	# time.sleep(5)
-	# axi.plot_setup(output_homed)
-	# axi.options.mode = "res_plot"
-	# output_resume = axi.plot_run(True)
-	# time.sleep(5)
-	# axi.plot_setup(output_resume)
-	# axi.options.mode = "res_home"
-	# axi.plot_run(True)
 
 #-------------------------------------------#
