@@ -14,7 +14,7 @@ ATLAS_PASSWORD = os.environ.get("atlas-password")
 ATLAS_URI = f"mongodb+srv://{ATLAS_USERNAME}:{ATLAS_PASSWORD}@wts-webapp.bov55.mongodb.net/?retryWrites=true&w=majority"
 ATLAS_DB_NAME = "wts-artyard"
 ATLAS_COLLECTION_NAME = "data"
-ATLAS_DOCUMENT_LIMIT = 40
+ATLAS_DOCUMENT_LIMIT = 2
 
 # svg
 # X_DATA_IN_MIN = -6.07
@@ -396,32 +396,46 @@ if __name__ == "__main__":
 	def run():
 		global isRunning, output_svg
 		if not isRunning:
+
 			isRunning = True
+
 			log_timestamp = create_log()
 			data = get_data()
 			svg_filename = create_svg(log_timestamp, data)
+
 			axi.plot_setup(svg_filename)
 			output_svg = axi.plot_run(True)
+
+			axi.plot_setup(output_svg)
+			axi.options.mode = "res_home"
+			output_svg = axi.plot_run(True)
+
 			isRunning = False
 
 	def resume():
 		global isRunning, output_svg
-		print(output_svg)
 		if not isRunning:
+
 			isRunning = True
+
 			log_timestamp = create_log()
-			# output_svg = resume_plot(output_svg)
-			# isRunning = False
+
 			axi.plot_setup(output_svg)
 			axi.options.mode = "res_plot"
 			output_svg = axi.plot_run(True)
+
+			axi.plot_setup(output_svg)
+			axi.options.mode = "res_home"
+			output_svg = axi.plot_run(True)
+
 			isRunning = False
 
 	def disengage_motors():
-		axi.plot_setup()
-		axi.options.mode = "align"
-		axi.plot_run()
-
+		global isRunning
+		if not isRunning:
+			axi.plot_setup()
+			axi.options.mode = "align"
+			axi.plot_run()
 
 	run_button = Button(14)
 	run_button.when_pressed = run
@@ -433,37 +447,5 @@ if __name__ == "__main__":
 	disengage_button.when_pressed = disengage_motors
 	
 	signal.pause()
-
-	# import time
-
-	# output_svg = None
-
-	# def run():
-	# 	global output_svg
-	# 	axi.plot_setup("/home/pi/Desktop/wts/outputs/1687811533_output.svg")
-	# 	output_svg = axi.plot_run(True)
-	# 	print(output_svg)
-
-	# def resume():
-	# 	global output_svg
-	# 	axi.plot_setup(output_svg)
-	# 	axi.options.mode = "res_plot"
-	# 	axi.plot_run(True)
-
-	# def disengage_motors():
-	# 	axi.plot_setup()
-	# 	axi.options.mode = "align"
-	# 	axi.plot_run()
-
-	# run_button = Button(14)
-	# run_button.when_pressed = run
-	
-	# resume_button = Button(24)
-	# resume_button.when_pressed = resume
-
-	# disengage_button = Button(25)
-	# disengage_button.when_pressed = disengage_motors
-	
-	# signal.pause()
 
 #-------------------------------------------#
