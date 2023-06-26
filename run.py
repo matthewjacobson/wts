@@ -406,6 +406,7 @@ if __name__ == "__main__":
 
 	def resume():
 		global isRunning, output_svg
+		print(output_svg)
 		if not isRunning:
 			isRunning = True
 			log_timestamp = create_log()
@@ -414,6 +415,7 @@ if __name__ == "__main__":
 			axi.plot_setup(output_svg)
 			axi.options.mode = "res_plot"
 			output_svg = axi.plot_run(True)
+			isRunning = False
 
 	def disengage_motors():
 		axi.plot_setup()
