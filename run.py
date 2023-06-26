@@ -438,6 +438,7 @@ if __name__ == "__main__":
 		axi.plot_run(True)
 
 	def disengage_motors():
+		axi.plot_setup()
 		axi.options.mode = "align"
 		axi.plot_run()
 
@@ -447,8 +448,8 @@ if __name__ == "__main__":
 	resume_button = Button(24)
 	resume_button.when_pressed = resume
 
-	resume_button = Button(25)
-	resume_button.when_pressed = disengage_motors
+	disengage_button = Button(25)
+	disengage_button.when_pressed = disengage_motors
 	
 	signal.pause()
 
