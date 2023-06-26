@@ -381,40 +381,43 @@ def resume_plot(output_svg):
 
 from gpiozero import Button
 import signal
+import keyboard
 
 if __name__ == "__main__":
 
-	# output_svg = None
-	# isRunning = False
+	output_svg = None
+	isRunning = False
 	
-	# def run():
-	# 	global isRunning, output_svg
-	# 	if not isRunning:
-	# 		isRunning = True
-	# 		log_timestamp = create_log()
-	# 		data = get_data()
-	# 		svg_filename = create_svg(log_timestamp, data)
-	# 		output_svg = plot(svg_filename)
-	# 		isRunning = False
+	def run():
+		print("running")
+		global isRunning, output_svg
+		if not isRunning:
+			isRunning = True
+			log_timestamp = create_log()
+			data = get_data()
+			svg_filename = create_svg(log_timestamp, data)
+			output_svg = plot(svg_filename)
+			isRunning = False
 
-	# def resume():
-	# 	global isRunning, output_svg
-	# 	if not isRunning:
-	# 		isRunning = True
-	# 		log_timestamp = create_log()
-	# 		output_svg = resume_plot(output_svg)
-	# 		isRunning = False
-		
-		
+	def resume():
+		print("resuming")
+		global isRunning, output_svg
+		if not isRunning:
+			isRunning = True
+			log_timestamp = create_log()
+			output_svg = resume_plot(output_svg)
+			isRunning = False
 
-	# button = Button(14)
-	# button.when_pressed = run
+	button = Button(14)
+	button.when_pressed = run
 	
-	# pause_button = Button(24)
-	# button.when_pressed = resume
-	
-	# signal.pause()
+	pause_button = Button(24)
+	button.when_pressed = resume
 
-	log_timestamp = create_log()
+	# manual run - mimmick buttons
+	keyboard.on_press_key("p", run)
+	keyboard.on_press_key("r", resume)
+	
+	signal.pause()
 
 #-------------------------------------------#
