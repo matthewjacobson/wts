@@ -330,8 +330,7 @@ def plot(svg_filename):
 		# axi.plot_run()
 
 		# trying to add pause/resume functionality
-		output_svg = axi.plot_run(True)
-		return output_svg
+		return axi.plot_run(True)
 	except RuntimeError:
 		axi.options.mode = "align"
 		axi.plot_run()
