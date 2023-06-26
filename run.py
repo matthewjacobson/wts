@@ -399,6 +399,7 @@ if __name__ == "__main__":
 			svg_filename = create_svg(log_timestamp, data)
 			output_svg = plot(svg_filename)
 			isRunning = False
+			print("done")
 
 	def resume():
 		print("resuming")
