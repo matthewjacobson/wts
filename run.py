@@ -26,8 +26,10 @@ X_DATA_IN_MAX = 2.2
 Y_DATA_IN_MIN = 1.5
 Y_DATA_IN_MAX = 14
 SVG_PADDING_INCHES = 0.25
-SVG_WIDTH_INCHES = 23.4
-SVG_HEIGHT_INCHES = 33.1
+# SVG_WIDTH_INCHES = 23.4
+# SVG_HEIGHT_INCHES = 33.1
+SVG_WIDTH_INCHES = 8.5
+SVG_HEIGHT_INCHES = 11
 SVG_DPI = 100
 SVG_WIDTH_PIXELS = int(SVG_DPI * SVG_WIDTH_INCHES)
 SVG_HEIGHT_PIXELS = int(SVG_DPI * SVG_HEIGHT_INCHES)
@@ -44,7 +46,8 @@ AXIDRAW_OPTIONS = {
 	"pen_delay_down": 0,	# Added delay after lowering pen.
 	"pen_delay_up": 70,		# Added delay after raising pen.
 	"const_speed": True,	# Option: Use constant speed when pen is down.
-	"model": 5,				# Select model of AxiDraw hardware.
+	# "model": 5,				# Select model of AxiDraw hardware.
+	"model": 1,				# Select model of AxiDraw hardware.
 	"penlift": 1,			# Pen lift servo configuration
 	"port": None,			# Specify a USB port or AxiDraw to use.
 	"port_config": 0		# Override how the USB ports are located.
