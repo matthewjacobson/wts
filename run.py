@@ -407,11 +407,11 @@ if __name__ == "__main__":
 			output_svg = resume_plot(output_svg)
 			isRunning = False
 
-	button = Button(14)
-	button.when_pressed = run
+	run_button = Button(14)
+	run_button.when_pressed = run
 	
-	pause_button = Button(24)
-	button.when_pressed = resume
+	resume_button = Button(24)
+	resume_button.when_pressed = resume
 	
 	signal.pause()
 
