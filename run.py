@@ -394,30 +394,26 @@ if __name__ == "__main__":
 	output_svg = None
 	
 	def run():
-		print("running")
 		global isRunning, output_svg
 		if not isRunning:
 			isRunning = True
 			log_timestamp = create_log()
 			data = get_data()
 			svg_filename = create_svg(log_timestamp, data)
-			# in_progress_svg = plot(svg_filename)
-			# isRunning = False
-			# print("done")
-			# print(in_progress_svg)
 			axi.plot_setup(svg_filename)
 			output_svg = axi.plot_run(True)
-			print(output_svg)
+			isRunning = False
 
 	def resume():
-		print("resuming")
 		global isRunning, output_svg
-		print(output_svg)
 		if not isRunning:
 			isRunning = True
 			log_timestamp = create_log()
-			output_svg = resume_plot(output_svg)
-			isRunning = False
+			# output_svg = resume_plot(output_svg)
+			# isRunning = False
+			axi.plot_setup(output_svg)
+			axi.options.mode = "res_plot"
+			output_svg = axi.plot_run(True)
 
 	def disengage_motors():
 		axi.plot_setup()
