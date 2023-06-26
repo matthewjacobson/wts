@@ -433,5 +433,9 @@ if __name__ == "__main__":
 	axi.plot_setup(output_homed)
 	axi.options.mode = "res_plot"
 	axi.plot_run()
+	time.sleep(5)
+	axi.plot_setup(output_svg)
+	axi.options.mode = "res_home"
+	output_homed = axi.plot_run(True)
 
 #-------------------------------------------#
