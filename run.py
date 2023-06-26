@@ -308,75 +308,6 @@ axi.options.model = AXIDRAW_OPTIONS["model"]
 # axi.options.port = AXIDRAW_OPTIONS["port"]
 # axi.options.port_config = AXIDRAW_OPTIONS["port_config"]
 
-def plot(svg_filename):
-
-	logging.info("Starting axidraw control")
-
-	# load file
-	axi.plot_setup(svg_filename)
-
-	logging.info("SVG loaded")
-
-	# enable errors
-	axi.errors.connect = True
-	axi.errors.button = True
-	axi.errors.keyboard = True
-	axi.errors.disconnect = True
-
-
-	# plot the file
-	try:
-		# axi.plot_run()
-		# logging.info("plot complete")
-		# axi.options.mode = "align"
-		# axi.plot_run()
-
-		# trying to add pause/resume functionality
-		output_svg = axi.plot_run(True)
-		print(output_svg)
-		return output_svg
-	except RuntimeError:
-		axi.options.mode = "align"
-		axi.plot_run()
-		logging.error(f"plot failed with error {axi.errors.code}")
-		if axi.errors.code == 101:
-			logging.error(f"failed to connect")
-		elif axi.errors.code == 102:
-			logging.error(f"failed to connect")
-		elif axi.errors.code == 103:
-			logging.error(f"failed to connect")
-		elif axi.errors.code == 104:
-			logging.error(f"failed to connect")
-
-def resume_plot(output_svg):
-
-	logging.info("Resuming plot")
-
-	# load file
-	axi.plot_setup(output_svg)
-	
-	axi.options.mode = "res_plot"
-
-	logging.info("SVG loaded")
-	
-	try:
-		# trying to add pause/resume functionality
-		output_svg = axi.plot_run(True)
-		return output_svg
-	except RuntimeError:
-		axi.options.mode = "align"
-		axi.plot_run()
-		logging.error(f"plot failed with error {axi.errors.code}")
-		if axi.errors.code == 101:
-			logging.error(f"failed to connect")
-		elif axi.errors.code == 102:
-			logging.error(f"failed to connect")
-		elif axi.errors.code == 103:
-			logging.error(f"failed to connect")
-		elif axi.errors.code == 104:
-			logging.error(f"failed to connect")
-	
-
 #-------------------------------------------#
 
 
@@ -403,6 +334,8 @@ if __name__ == "__main__":
 			data = get_data()
 			svg_filename = create_svg(log_timestamp, data)
 
+			logging.info("Starting axidraw control")
+
 			axi.plot_setup(svg_filename)
 			output_svg = axi.plot_run(True)
 
@@ -420,6 +353,8 @@ if __name__ == "__main__":
 
 			log_timestamp = create_log()
 
+			logging.info("Resuming plot")
+
 			axi.plot_setup(output_svg)
 			axi.options.mode = "res_plot"
 			output_svg = axi.plot_run(True)
@@ -431,11 +366,12 @@ if __name__ == "__main__":
 			isRunning = False
 
 	def disengage_motors():
-		global isRunning
+		global isRunning, output_svg
 		if not isRunning:
 			axi.plot_setup()
 			axi.options.mode = "align"
 			axi.plot_run()
+			output_svg = None
 
 	run_button = Button(14)
 	run_button.when_pressed = run
@@ -447,5 +383,9 @@ if __name__ == "__main__":
 	disengage_button.when_pressed = disengage_motors
 	
 	signal.pause()
+
+	# log_timestamp = create_log()
+	# data = get_data()
+	# svg_filename = create_svg(log_timestamp, data)
 
 #-------------------------------------------#
