@@ -291,6 +291,22 @@ from pyaxidraw import axidraw
 # create the axidraw class instance
 axi = axidraw.AxiDraw()
 
+# configure plot context
+# axi.options.speed_pendown = AXIDRAW_OPTIONS["speed_pendown"]
+# axi.options.speed_penup = AXIDRAW_OPTIONS["speed_penup"]
+# axi.options.accel = AXIDRAW_OPTIONS["accel"]
+axi.options.pen_pos_down = AXIDRAW_OPTIONS["pen_pos_down"]
+axi.options.pen_pos_up = AXIDRAW_OPTIONS["pen_pos_up"]
+# axi.options.pen_rate_lower = AXIDRAW_OPTIONS["pen_rate_lower"]
+# axi.options.pen_rate_raise = AXIDRAW_OPTIONS["pen_rate_raise"]
+# axi.options.pen_delay_down = AXIDRAW_OPTIONS["pen_delay_down"]
+# axi.options.pen_delay_up = AXIDRAW_OPTIONS["pen_delay_up"]
+axi.options.const_speed = AXIDRAW_OPTIONS["const_speed"]
+axi.options.model = AXIDRAW_OPTIONS["model"]
+# axi.options.penlift = AXIDRAW_OPTIONS["penlift"]
+# axi.options.port = AXIDRAW_OPTIONS["port"]
+# axi.options.port_config = AXIDRAW_OPTIONS["port_config"]
+
 def plot(svg_filename):
 
 	logging.info("Starting axidraw control")
@@ -306,21 +322,6 @@ def plot(svg_filename):
 	axi.errors.keyboard = True
 	axi.errors.disconnect = True
 
-	# configure plot context
-	# axi.options.speed_pendown = AXIDRAW_OPTIONS["speed_pendown"]
-	# axi.options.speed_penup = AXIDRAW_OPTIONS["speed_penup"]
-	# axi.options.accel = AXIDRAW_OPTIONS["accel"]
-	axi.options.pen_pos_down = AXIDRAW_OPTIONS["pen_pos_down"]
-	axi.options.pen_pos_up = AXIDRAW_OPTIONS["pen_pos_up"]
-	# axi.options.pen_rate_lower = AXIDRAW_OPTIONS["pen_rate_lower"]
-	# axi.options.pen_rate_raise = AXIDRAW_OPTIONS["pen_rate_raise"]
-	# axi.options.pen_delay_down = AXIDRAW_OPTIONS["pen_delay_down"]
-	# axi.options.pen_delay_up = AXIDRAW_OPTIONS["pen_delay_up"]
-	axi.options.const_speed = AXIDRAW_OPTIONS["const_speed"]
-	axi.options.model = AXIDRAW_OPTIONS["model"]
-	# axi.options.penlift = AXIDRAW_OPTIONS["penlift"]
-	# axi.options.port = AXIDRAW_OPTIONS["port"]
-	# axi.options.port_config = AXIDRAW_OPTIONS["port_config"]
 
 	# plot the file
 	try:
@@ -374,10 +375,7 @@ def resume_plot(output_svg):
 		elif axi.errors.code == 104:
 			logging.error(f"failed to connect")
 	
-def disengage_motors():
-	axi.plot_setup()
-	axi.options.mode = "align"
-	axi.plot_run()
+
 #-------------------------------------------#
 
 
@@ -392,20 +390,23 @@ import signal
 if __name__ == "__main__":
 
 	isRunning = False
-	in_progress_svg = None
+	output_svg = None
 	
 	def run():
 		print("running")
-		global isRunning, in_progress_svg
+		global isRunning, output_svg
 		if not isRunning:
 			isRunning = True
 			log_timestamp = create_log()
 			data = get_data()
 			svg_filename = create_svg(log_timestamp, data)
-			in_progress_svg = plot(svg_filename)
-			isRunning = False
-			print("done")
-			print(in_progress_svg)
+			# in_progress_svg = plot(svg_filename)
+			# isRunning = False
+			# print("done")
+			# print(in_progress_svg)
+			axi.plot_setup(svg_filename)
+			output_svg = axi.plot_run(True)
+			print(output_svg)
 
 	def resume():
 		print("resuming")
@@ -416,6 +417,12 @@ if __name__ == "__main__":
 			log_timestamp = create_log()
 			output_svg = resume_plot(output_svg)
 			isRunning = False
+
+	def disengage_motors():
+		axi.plot_setup()
+		axi.options.mode = "align"
+		axi.plot_run()
+
 
 	run_button = Button(14)
 	run_button.when_pressed = run
