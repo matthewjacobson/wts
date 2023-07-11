@@ -289,23 +289,6 @@ from pyaxidraw import axidraw
 
 # create the axidraw class instance
 axi = axidraw.AxiDraw()
-axi.plot_setup()
-
-# configure plot context
-# axi.options.speed_pendown = AXIDRAW_OPTIONS["speed_pendown"]
-# axi.options.speed_penup = AXIDRAW_OPTIONS["speed_penup"]
-# axi.options.accel = AXIDRAW_OPTIONS["accel"]
-axi.options.pen_pos_down = AXIDRAW_OPTIONS["pen_pos_down"]
-axi.options.pen_pos_up = AXIDRAW_OPTIONS["pen_pos_up"]
-# axi.options.pen_rate_lower = AXIDRAW_OPTIONS["pen_rate_lower"]
-# axi.options.pen_rate_raise = AXIDRAW_OPTIONS["pen_rate_raise"]
-# axi.options.pen_delay_down = AXIDRAW_OPTIONS["pen_delay_down"]
-# axi.options.pen_delay_up = AXIDRAW_OPTIONS["pen_delay_up"]
-axi.options.const_speed = AXIDRAW_OPTIONS["const_speed"]
-axi.options.model = AXIDRAW_OPTIONS["model"]
-# axi.options.penlift = AXIDRAW_OPTIONS["penlift"]
-# axi.options.port = AXIDRAW_OPTIONS["port"]
-# axi.options.port_config = AXIDRAW_OPTIONS["port_config"]
 
 #-------------------------------------------#
 
@@ -336,6 +319,23 @@ if __name__ == "__main__":
 			logging.info("Starting axidraw control")
 
 			axi.plot_setup(svg_filename)
+
+			# configure plot context
+			# axi.options.speed_pendown = AXIDRAW_OPTIONS["speed_pendown"]
+			# axi.options.speed_penup = AXIDRAW_OPTIONS["speed_penup"]
+			# axi.options.accel = AXIDRAW_OPTIONS["accel"]
+			axi.options.pen_pos_down = AXIDRAW_OPTIONS["pen_pos_down"]
+			axi.options.pen_pos_up = AXIDRAW_OPTIONS["pen_pos_up"]
+			# axi.options.pen_rate_lower = AXIDRAW_OPTIONS["pen_rate_lower"]
+			# axi.options.pen_rate_raise = AXIDRAW_OPTIONS["pen_rate_raise"]
+			# axi.options.pen_delay_down = AXIDRAW_OPTIONS["pen_delay_down"]
+			# axi.options.pen_delay_up = AXIDRAW_OPTIONS["pen_delay_up"]
+			axi.options.const_speed = AXIDRAW_OPTIONS["const_speed"]
+			axi.options.model = AXIDRAW_OPTIONS["model"]
+			# axi.options.penlift = AXIDRAW_OPTIONS["penlift"]
+			# axi.options.port = AXIDRAW_OPTIONS["port"]
+			# axi.options.port_config = AXIDRAW_OPTIONS["port_config"]
+
 			output_svg = axi.plot_run(True)
 
 			axi.plot_setup(output_svg)
@@ -355,6 +355,23 @@ if __name__ == "__main__":
 			logging.info("Resuming plot")
 
 			axi.plot_setup(output_svg)
+
+			# configure plot context
+			# axi.options.speed_pendown = AXIDRAW_OPTIONS["speed_pendown"]
+			# axi.options.speed_penup = AXIDRAW_OPTIONS["speed_penup"]
+			# axi.options.accel = AXIDRAW_OPTIONS["accel"]
+			axi.options.pen_pos_down = AXIDRAW_OPTIONS["pen_pos_down"]
+			axi.options.pen_pos_up = AXIDRAW_OPTIONS["pen_pos_up"]
+			# axi.options.pen_rate_lower = AXIDRAW_OPTIONS["pen_rate_lower"]
+			# axi.options.pen_rate_raise = AXIDRAW_OPTIONS["pen_rate_raise"]
+			# axi.options.pen_delay_down = AXIDRAW_OPTIONS["pen_delay_down"]
+			# axi.options.pen_delay_up = AXIDRAW_OPTIONS["pen_delay_up"]
+			axi.options.const_speed = AXIDRAW_OPTIONS["const_speed"]
+			axi.options.model = AXIDRAW_OPTIONS["model"]
+			# axi.options.penlift = AXIDRAW_OPTIONS["penlift"]
+			# axi.options.port = AXIDRAW_OPTIONS["port"]
+			# axi.options.port_config = AXIDRAW_OPTIONS["port_config"]
+			
 			axi.options.mode = "res_plot"
 			output_svg = axi.plot_run(True)
 
