@@ -17,19 +17,13 @@ ATLAS_COLLECTION_NAME = "data"
 ATLAS_DOCUMENT_LIMIT = 40
 
 # svg
-# X_DATA_IN_MIN = -6.07
-# X_DATA_IN_MAX = 4.22
-# Y_DATA_IN_MIN = -1.11
-# Y_DATA_IN_MAX = 18.09
-X_DATA_IN_MIN = -4.2
-X_DATA_IN_MAX = 2.2
+X_DATA_IN_MIN = -6
+X_DATA_IN_MAX = 5.25
 Y_DATA_IN_MIN = 1.5
-Y_DATA_IN_MAX = 14
+Y_DATA_IN_MAX = 19.5
 SVG_PADDING_INCHES = 0.25
 SVG_WIDTH_INCHES = 23.4
 SVG_HEIGHT_INCHES = 33.1
-# SVG_WIDTH_INCHES = 8.5
-# SVG_HEIGHT_INCHES = 11
 SVG_DPI = 100
 SVG_WIDTH_PIXELS = int(SVG_DPI * SVG_WIDTH_INCHES)
 SVG_HEIGHT_PIXELS = int(SVG_DPI * SVG_HEIGHT_INCHES)
@@ -207,22 +201,6 @@ def create_svg(log_timestamp, data):
 		}
 	"""))
 
-	# get the incoming bounds
-	bounds = [10000, -10000, 10000, -10000]
-	for document in data:
-		for position in document["pos"]:
-			if float(position["x"]) < bounds[0]:
-				bounds[0] = float(position["x"])
-			elif float(position["x"]) > bounds[1]:
-				bounds[1] = float(position["x"])
-			if float(position["y"]) < bounds[2]:
-				bounds[2] = float(position["y"])
-			elif float(position["y"]) > bounds[3]:
-				bounds[3] = float(position["y"])
-
-	def mapRange(t, inMin, inMax, outMin, outMax):
-		return (t - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
-
 	# calculate the aspect ratios
 	in_aspect_ratio = (X_DATA_IN_MAX - X_DATA_IN_MIN) / (Y_DATA_IN_MAX - Y_DATA_IN_MIN)
 	out_aspect_ratio = (SVG_WIDTH_INCHES - 2 * SVG_PADDING_INCHES) / (SVG_HEIGHT_INCHES - 2 * SVG_PADDING_INCHES)
@@ -240,24 +218,34 @@ def create_svg(log_timestamp, data):
 		boundingBox['y'] = 0.5 * (SVG_HEIGHT_PIXELS - 1 / in_aspect_ratio * (SVG_WIDTH_PIXELS - 2 * SVG_PADDING_INCHES * SVG_DPI))
 		boundingBox['h'] = SVG_HEIGHT_PIXELS - 2 * boundingBox['y']
 
-	# add text to the svg
-	for text in TEXTS:
-		scale = text["scale"]
-		rotate = text["rotate"]
-		xTranslate = mapRange(text["translate"][0], X_DATA_IN_MIN, X_DATA_IN_MAX, boundingBox["x"], boundingBox["x"] + boundingBox["w"])
-		yTranslate = mapRange(text["translate"][1], Y_DATA_IN_MIN, Y_DATA_IN_MAX, boundingBox["y"], boundingBox["y"] + boundingBox["h"])
-		for path in text["paths"]:
-			svg.add(svg.path(d=path, stroke="#000", fill="none", stroke_width=1, class_='vectorEffectClass', transform=f"translate({xTranslate} {yTranslate}) rotate({rotate}) scale({scale})"))
+	# debug - draw bounds
+	# xMin = boundingBox["x"]
+	# xMax = boundingBox["x"] + boundingBox["w"]
+	# yMin = boundingBox["y"]
+	# yMax = boundingBox["y"] + boundingBox["h"]
+	# bounds_string = f"M{xMin},{yMin} L{xMax},{yMin} L{xMax},{yMax} L{xMin},{yMax} L{xMin},{yMin}"
+	# svg.add(svg.path(d=bounds_string, stroke="#000", fill="none", stroke_width=1))
 
-	docIndex = 0
+	def mapRange(t, inMin, inMax, outMin, outMax):
+		return (t - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+
+	# add text to the svg
+	# for text in TEXTS:
+	# 	scale = text["scale"]
+	# 	rotate = text["rotate"]
+	# 	xTranslate = mapRange(text["translate"][0], X_DATA_IN_MIN, X_DATA_IN_MAX, boundingBox["x"], boundingBox["x"] + boundingBox["w"])
+	# 	yTranslate = mapRange(text["translate"][1], Y_DATA_IN_MIN, Y_DATA_IN_MAX, boundingBox["y"], boundingBox["y"] + boundingBox["h"])
+	# 	for path in text["paths"]:
+	# 		svg.add(svg.path(d=path, stroke="#000", fill="none", stroke_width=1, class_='vectorEffectClass', transform=f"translate({xTranslate} {yTranslate}) rotate({rotate}) scale({scale})"))
+
 	for document in data:
 		path_positions = []
 		for posIndex, position in enumerate(document["pos"]):
-			x = mapRange(float(position["x"]), X_DATA_IN_MIN, X_DATA_IN_MAX, boundingBox['x'], boundingBox['x'] + boundingBox['w'])
+			x = mapRange(float(position["x"]), X_DATA_IN_MIN, X_DATA_IN_MAX, boundingBox['x'] + boundingBox['w'], boundingBox['x'])
 			y = mapRange(float(position["y"]), Y_DATA_IN_MIN, Y_DATA_IN_MAX, boundingBox['y'], boundingBox['y'] + boundingBox['h'])
 			if x > boundingBox["x"] and x < boundingBox["x"] + boundingBox["w"] and y > boundingBox["y"] and y < boundingBox["y"] + boundingBox["h"]:
 				path_positions.append({"x": x, "y": y})
-			if x < boundingBox["x"] or x > boundingBox["x"] + boundingBox["w"] or y < boundingBox["y"] or y > boundingBox["y"] + boundingBox["h"] or posIndex == len(document["pos"]):
+			if x < boundingBox["x"] or x > boundingBox["x"] + boundingBox["w"] or y < boundingBox["y"] or y > boundingBox["y"] + boundingBox["h"] or posIndex == len(document["pos"]) - 1:
 				if len(path_positions) > 1:
 					path_string = ""
 					for index, position in enumerate(path_positions):
@@ -371,7 +359,7 @@ if __name__ == "__main__":
 			# axi.options.penlift = AXIDRAW_OPTIONS["penlift"]
 			# axi.options.port = AXIDRAW_OPTIONS["port"]
 			# axi.options.port_config = AXIDRAW_OPTIONS["port_config"]
-			
+
 			axi.options.mode = "res_plot"
 			output_svg = axi.plot_run(True)
 
@@ -397,7 +385,7 @@ if __name__ == "__main__":
 	
 	disengage_button = Button(25)
 	disengage_button.when_pressed = disengage_motors
-	
+
 	signal.pause()
 
 #-------------------------------------------#
