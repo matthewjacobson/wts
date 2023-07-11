@@ -14,7 +14,7 @@ ATLAS_PASSWORD = os.environ.get("atlas-password")
 ATLAS_URI = f"mongodb+srv://{ATLAS_USERNAME}:{ATLAS_PASSWORD}@wts-webapp.bov55.mongodb.net/?retryWrites=true&w=majority"
 ATLAS_DB_NAME = "wts-artyard"
 ATLAS_COLLECTION_NAME = "data"
-ATLAS_DOCUMENT_LIMIT = 2
+ATLAS_DOCUMENT_LIMIT = 40
 
 # svg
 # X_DATA_IN_MIN = -6.07
